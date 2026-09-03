@@ -1,0 +1,8 @@
+[general]
+name=Flexible Polygon Editor
+description=Edit polygons by vertices and edges
+version=0.1
+qgisMinimumVersion=3.22
+author=R.Kobayashi
+email=your@email.com
+icon=icon.png
