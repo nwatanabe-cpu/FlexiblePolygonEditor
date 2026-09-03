@@ -1,8 +1,15 @@
 [general]
 name=Flexible Polygon Editor
-description=Edit polygons by vertices and edges
+description=Edit lines and polygons by vertices and edges, split features with multiple points or curves, and regenerate polygons from line layers.
 version=0.1
 qgisMinimumVersion=3.22
 author=R.Kobayashi
-email=your@email.com
+about=Flexible Polygon Editor provides tools for topological vertex movement, multi-point or curved feature splitting, and polygonization with endpoint repair and attribute transfer.
+repository=https://github.com/nwatanabe-cpu/FlexiblePolygonEditor
+homepage=https://github.com/nwatanabe-cpu/FlexiblePolygonEditor
+tracker=https://github.com/nwatanabe-cpu/FlexiblePolygonEditor/issues
+category=Vector
+tags=polygon, line, editing, vertex, split, polygonize, topology
+experimental=False
+deprecated=False
 icon=icon.png
