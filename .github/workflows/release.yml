@@ -28,9 +28,9 @@ jobs:
             | grep -vE '(^|/)(\.github|__pycache__)(/|$)|\.pyc$')
           git archive --format=zip \
             --prefix=FlexiblePolygonEditor/ \
+            --output="${archive}" \
             "${GITHUB_REF_NAME}" \
-            -- ${files} \
-            -o "${archive}"
+            -- ${files}
           echo "archive=${archive}" >> "${GITHUB_ENV}"
 
       - name: Upload ZIP as workflow artifact
