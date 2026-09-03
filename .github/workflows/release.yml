@@ -1,0 +1,53 @@
+name: Build and release QGIS plugin
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create QGIS plugin ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          archive="FlexiblePolygonEditor-${version}.zip"
+          files=$(git ls-tree -r --name-only "${GITHUB_REF_NAME}" \
+            | grep -vE '(^|/)(\.github|__pycache__)(/|$)|\.pyc$')
+          git archive --format=zip \
+            --prefix=FlexiblePolygonEditor/ \
+            "${GITHUB_REF_NAME}" \
+            -- ${files} \
+            -o "${archive}"
+          echo "archive=${archive}" >> "${GITHUB_ENV}"
+
+      - name: Upload ZIP as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FlexiblePolygonEditor-${{ github.ref_name }}
+          path: ${{ env.archive }}
+          if-no-files-found: error
+
+      - name: Create GitHub Release and attach ZIP
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            gh release upload "${GITHUB_REF_NAME}" "${archive}" --clobber
+          else
+            gh release create "${GITHUB_REF_NAME}" "${archive}" \
+              --title "Flexible Polygon Editor ${GITHUB_REF_NAME}" \
+              --generate-notes
+          fi
